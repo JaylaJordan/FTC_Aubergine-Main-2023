@@ -95,7 +95,7 @@ public class TestTeleop extends OpMode {
         if (linearSlide.getCurrentPosition() != (int) (lsHeight * TICKS_PER_INCH_LS)) {
             linearSlide.setTargetPosition((int)(lsHeight * TICKS_PER_INCH_LS));
             linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlide.setVelocity(850);
+            linearSlide.setVelocity(1500);
         } else linearSlide.setVelocity(0);
 
         telemetry.addData("y:", y);

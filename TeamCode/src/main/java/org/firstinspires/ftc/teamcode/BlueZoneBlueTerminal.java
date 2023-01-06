@@ -23,16 +23,19 @@ public class BlueZoneBlueTerminal extends LinearOpMode {
 
         robotencoded.forward(3,800);
 
-        robotencoded.setSlidePosition(0.5,MJ);
+        robotencoded.setSlidePosition(900,MJ);
 
         robotencoded.forward(3, 800);
+        sleep(4000); // wait until the arm stops shaking midair
+
+        sleep(4000);
 
         robotencoded.openClaw();
         sleep(1000);
 
         robotencoded.backward(5,800);
 
-        robotencoded.setSlidePosition(0.5, GJ);
+        robotencoded.setSlidePosition(900, GJ);
 
         robotencoded.strafeRight(16,800);
 
