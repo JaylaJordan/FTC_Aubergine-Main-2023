@@ -112,7 +112,6 @@ public class Robot {
         return angle;
     }
 
-
     public void stop_bot() {
         frontRight.setPower(0);
         frontLeft.setPower(0);

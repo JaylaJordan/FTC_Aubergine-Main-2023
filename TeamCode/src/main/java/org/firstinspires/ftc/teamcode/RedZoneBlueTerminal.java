@@ -5,7 +5,7 @@ import static org.firstinspires.ftc.teamcode.TestTeleop.MJ;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "red zone blue terminal", group = "basic auto")
+@Autonomous(name = "red zone blue terminal", group = "complex auto")
 public class RedZoneBlueTerminal extends LinearOpMode {
     @Override
     public void runOpMode() {
@@ -26,15 +26,16 @@ public class RedZoneBlueTerminal extends LinearOpMode {
 
         robotencoded.setSlidePosition(0.5,MJ);
 
-        robotencoded.forward(2,800);
+        robotencoded.forward(3,800);
 
         robotencoded.openClaw();
+        sleep(1000);
 
-        robotencoded.backward(6,800);
+        robotencoded.backward(5,800);
 
         robotencoded.setSlidePosition(0.5,GJ);
 
-        robotencoded.strafeRight(21,800);
+        robotencoded.strafeRight(16,800);
 
         /*
         robotencoded.forward(12,800);

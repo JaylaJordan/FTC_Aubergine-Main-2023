@@ -63,12 +63,10 @@ public class RobotEncoded {
     }
 
     public void openClaw () {
-        claw.setPosition(0.5);
-
+        claw.setPosition(0.9);
     }
-
     public void closeClaw () {
-        claw.setPosition(0.3);
+        claw.setPosition(0.2);
     }
 
     public void turnR(double Power) {
@@ -87,8 +85,7 @@ public class RobotEncoded {
         return angle;
     }
 
-
-    public void forward(int distanceInches, double velocity) {
+    public void forward(double distanceInches, double velocity) {
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         backLeft.setTargetPosition(backLeft.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
@@ -323,14 +320,14 @@ public class RobotEncoded {
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    public void setSlidePosition(double pow, double distanceInches) {
+    public void setSlidePosition(double velocity, double distanceInches) {
 
         if (distanceInches >= MAX_TICKS_LS || distanceInches < 0)
             return;
 
         linearSlide.setTargetPosition((int) (distanceInches * TICKS_PER_INCH_LS));
         linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        linearSlide.setPower(pow);
+        linearSlide.setVelocity(velocity);
 
         while(linearSlide.isBusy()) { }
     }

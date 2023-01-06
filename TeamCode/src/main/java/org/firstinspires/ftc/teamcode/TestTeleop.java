@@ -23,22 +23,22 @@ public class TestTeleop extends OpMode {
     double slowVal = 0.4;
     double defaultVal = 0.9;
 
-    DcMotor frontLeft;
-    DcMotor frontRight;
-    DcMotor backLeft;
-    DcMotor backRight;
-    DcMotor linearSlide;
+    DcMotorEx frontLeft;
+    DcMotorEx frontRight;
+    DcMotorEx backLeft;
+    DcMotorEx backRight;
+    DcMotorEx linearSlide;
 
     Servo claw;
 
     @Override
     public void init() {   // only ran once
 
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-        linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+        linearSlide = hardwareMap.get(DcMotorEx.class, "linearSlide");
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.REVERSE);
@@ -71,10 +71,10 @@ public class TestTeleop extends OpMode {
 
         //claw servo
         if (gamepad2.right_bumper) { // open claw
-            claw.setPosition(0.5);
+            claw.setPosition(0.9);
         }
         else if (gamepad2.left_bumper) { // close claw
-             claw.setPosition(0.3);
+             claw.setPosition(0.2);
         }
 
 
@@ -95,13 +95,13 @@ public class TestTeleop extends OpMode {
         if (linearSlide.getCurrentPosition() != (int) (lsHeight * TICKS_PER_INCH_LS)) {
             linearSlide.setTargetPosition((int)(lsHeight * TICKS_PER_INCH_LS));
             linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlide.setPower(0.4);
-        } else linearSlide.setPower(0);
+            linearSlide.setVelocity(850);
+        } else linearSlide.setVelocity(0);
 
         telemetry.addData("y:", y);
         telemetry.addData("x: ", x);
         telemetry.addData("r", r);
-        telemetry.addData("linear slide power", linearSlide.getPower());
+        telemetry.addData("linear slide velocity", linearSlide.getVelocity());
         telemetry.addData("claw position", claw.getPosition());
         telemetry.addData("cur pos", linearSlide.getCurrentPosition());
         telemetry.addData("target pos", lsHeight * TICKS_PER_INCH_LS);
