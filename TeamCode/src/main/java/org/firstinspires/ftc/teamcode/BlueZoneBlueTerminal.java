@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-import static org.firstinspires.ftc.teamcode.TestTeleop.GJ;
-import static org.firstinspires.ftc.teamcode.TestTeleop.MJ;
+import org.firstinspires.ftc.teamcode.Constants;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -23,7 +22,7 @@ public class BlueZoneBlueTerminal extends LinearOpMode {
 
         robotencoded.forward(3,800);
 
-        robotencoded.setSlidePosition(900,MJ);
+        robotencoded.setSlidePosition(900,Constants.MJ);
 
         robotencoded.forward(3, 800);
         sleep(4000); // wait until the arm stops shaking midair
@@ -35,7 +34,7 @@ public class BlueZoneBlueTerminal extends LinearOpMode {
 
         robotencoded.backward(5,800);
 
-        robotencoded.setSlidePosition(900, GJ);
+        robotencoded.setSlidePosition(900, Constants.GJ);
 
         robotencoded.strafeRight(16,800);
 

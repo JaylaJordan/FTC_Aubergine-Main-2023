@@ -11,8 +11,10 @@ public class TestIMU extends LinearOpMode {
         Robot robot = new Robot(hardwareMap);
 
         waitForStart();
+        robot.turnPID(90);
+        //sleep(3000);
+        //robot.turnTo(-90, 0.5);
 
-        //FOR THE FUTURE CHILDREN: find axes orientation experimentally with the following - Jason Yang
 
 //            while (opModeIsActive()) {
 //              Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
@@ -21,13 +23,7 @@ public class TestIMU extends LinearOpMode {
 //              telemetry.addData("third angle", orientation.thirdAngle);
 //              telemetry.update();
 //            }
-//    }
-
-        robot.turnPID(90);
-        sleep(3000);
-
-        //robot.turnTo(-90, 0.5);
-        if (isStopRequested()) return;
+        }
 
     }
-}
+

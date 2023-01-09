@@ -54,6 +54,7 @@ public class Robot {
     }
 
     public double getAngle() {
+
         Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
 
         double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;

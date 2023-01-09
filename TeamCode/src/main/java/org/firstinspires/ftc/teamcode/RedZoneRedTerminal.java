@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-import static org.firstinspires.ftc.teamcode.TestTeleop.GJ;
-import static org.firstinspires.ftc.teamcode.TestTeleop.MJ;
+import org.firstinspires.ftc.teamcode.Constants;
 
 import android.util.MalformedJsonException;
 
@@ -42,16 +41,18 @@ public class RedZoneRedTerminal extends LinearOpMode {
 
         robotencoded.forward(3,800);
 
-        robotencoded.setSlidePosition(900, MJ);
+        robotencoded.setSlidePosition(900, Constants.MJ);
 
         robotencoded.forward(3,800);
+        robotencoded.closeClaw();
         sleep(4000); // wait until the arm stops shaking midair
 
         robotencoded.openClaw();
+        sleep(1000);
 
         robotencoded.backward(5,800);
 
-        robotencoded.setSlidePosition(900, GJ);
+        robotencoded.setSlidePosition(900, Constants.GJ);
 
         robotencoded.strafeLeft(16,800);
 
