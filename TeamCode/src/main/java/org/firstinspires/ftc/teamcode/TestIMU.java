@@ -8,7 +8,7 @@ public class TestIMU extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        Robot robot = new Robot(hardwareMap);
+        Robot robot = new Robot(hardwareMap, telemetry);
 
         waitForStart();
         robot.turnPID(90);

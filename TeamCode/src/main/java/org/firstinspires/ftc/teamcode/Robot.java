@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -18,6 +19,7 @@ public class Robot {
     DcMotor backRight;
 
     BNO055IMU imu;
+    Telemetry telemetry;
 
     public Orientation lastAngles = new Orientation();
     public double currAngle = 0.0;
@@ -26,7 +28,7 @@ public class Robot {
 
 
     // constructor
-    public Robot(HardwareMap hardwareMap) {
+    public Robot(HardwareMap hardwareMap, Telemetry telemetry) {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -36,6 +38,8 @@ public class Robot {
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        this.telemetry = telemetry;
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -73,12 +77,11 @@ public class Robot {
 
         while(Math.abs(error) > 5) {
             double motorPower = error < 0 ? -Math.abs(power) : Math.abs(power);
-
             turnR(motorPower);
             error = degrees - getAngle();
         }
 
-        stop_bot();
+        stopBot();
     }
 
     public void turnPID(double degrees) {
@@ -87,21 +90,15 @@ public class Robot {
         double error = degrees;
 
         while(Math.abs(error) > 5) {
-            double motorPower = error < 0 ? -Math.abs(TURN_P * error) : Math.abs(TURN_P * error);
-
+            double motorPower = error * TURN_P; // Math.signum(error)
+            telemetry.addData("angle", this.getAngle());
             turnR(motorPower);
             error = degrees - getAngle();
+            telemetry.update();
         }
 
-        stop_bot();
+        stopBot();
     }
-
-//    public void turnTo(double degrees, double power) {
-//        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-//
-//        double error = degrees - orientation.firstAngle;
-//        turn(normalizeAngle(error), power);
-//    }
 
     public double normalizeAngle(double angle) {
         if (angle > 180) {
@@ -113,7 +110,7 @@ public class Robot {
         return angle;
     }
 
-    public void stop_bot() {
+    public void stopBot() {
         frontRight.setPower(0);
         frontLeft.setPower(0);
         backRight.setPower(0);
