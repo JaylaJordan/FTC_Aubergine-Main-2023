@@ -308,7 +308,7 @@ public class RobotEncoded {
         backLeft.setVelocity(0);
     }
 
-    public void stop_bot() {
+    public void stopBot() {
         frontLeft.setVelocity(0);
         frontRight.setVelocity(0);
         backLeft.setVelocity(0);
@@ -324,6 +324,7 @@ public class RobotEncoded {
 
         if (distanceInches >= MAX_TICKS_LS || distanceInches < 0)
             return;
+
 
         linearSlide.setTargetPosition((int) (distanceInches * TICKS_PER_INCH_LS));
         linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);

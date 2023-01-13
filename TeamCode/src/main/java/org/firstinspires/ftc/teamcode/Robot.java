@@ -70,13 +70,13 @@ public class Robot {
         return currAngle;
     }
 
-    public void turn(double degrees, double power) {
+    public void turn(double degrees, double power) { //power is positive
         resetAngle();
 
         double error = degrees;
 
         while(Math.abs(error) > 5) {
-            double motorPower = error < 0 ? -Math.abs(power) : Math.abs(power);
+            double motorPower = error < 0 ? -power : power;
             turnR(motorPower);
             error = degrees - getAngle();
         }
@@ -89,11 +89,16 @@ public class Robot {
 
         double error = degrees;
 
-        while(Math.abs(error) > 5) {
-            double motorPower = error * TURN_P; // Math.signum(error)
+        while (Math.abs(error) > 5) {
             telemetry.addData("angle", this.getAngle());
+            telemetry.addData("error", error);
+
+            double motorPower = error * TURN_P * Math.signum(error);
+            telemetry.addData("power", motorPower);
+
             turnR(motorPower);
             error = degrees - getAngle();
+
             telemetry.update();
         }
 

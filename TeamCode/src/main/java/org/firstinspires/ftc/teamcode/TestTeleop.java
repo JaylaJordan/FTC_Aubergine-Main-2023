@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Const;
-import org.firstinspires.ftc.teamcode.Constants;
-
 
 @TeleOp (name="main")
 public class TestTeleop extends OpMode {
@@ -64,7 +61,7 @@ public class TestTeleop extends OpMode {
 
         //claw servo
         if (gamepad2.right_bumper) { // open claw
-            claw.setPosition(0.9);
+            claw.setPosition(0.85);
         }
         else if (gamepad2.left_bumper) { // close claw
              claw.setPosition(0.2);
@@ -85,6 +82,7 @@ public class TestTeleop extends OpMode {
             lsHeight = Constants.HJ;
         }
 
+        //manual control
         if (gamepad2.right_stick_y > 0.1) {
             lsHeight = linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS;
             lsHeight += 0.0005;
@@ -93,6 +91,8 @@ public class TestTeleop extends OpMode {
             lsHeight -= 0.0005;
         }
 
+        //move linear slide
+        //Math.abs(linearSlide.getCurrentPosition() - (int) (lsHeight * Constants.TICKS_PER_INCH_LS)) >= 0.03
         if (linearSlide.getCurrentPosition() != (int) (lsHeight * Constants.TICKS_PER_INCH_LS)) {
             linearSlide.setTargetPosition((int)(lsHeight * Constants.TICKS_PER_INCH_LS));
             linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);

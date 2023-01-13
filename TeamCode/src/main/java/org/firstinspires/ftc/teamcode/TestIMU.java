@@ -12,8 +12,6 @@ public class TestIMU extends LinearOpMode {
 
         waitForStart();
         robot.turnPID(90);
-        //sleep(3000);
-        //robot.turnTo(-90, 0.5);
 
 
 //            while (opModeIsActive()) {
