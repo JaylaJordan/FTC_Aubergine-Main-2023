@@ -21,10 +21,10 @@ public class Robot {
     BNO055IMU imu;
     Telemetry telemetry;
 
-    public Orientation lastAngles = new Orientation();
+    public Orientation startingAngle = new Orientation();
     public double currAngle = 0.0;
 
-    private double TURN_P = 0.002777777778; // tune this
+    private double TURN_P = 1.0/360; // tune this
 
 
     // constructor
@@ -53,43 +53,33 @@ public class Robot {
     }
 
     public void resetAngle() {
-        lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
-        currAngle = 0;
+        startingAngle = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES);
+//        currAngle = 0;
     }
 
     public double getAngle() {
 
-        Orientation orientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+        Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES);
 
-        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
+//        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
+//        telemetry.addData("raw",orientation.firstAngle);
+        telemetry.addData("z", orientation.firstAngle);
+        telemetry.addData("x", orientation.secondAngle);
+        telemetry.addData("y", orientation.thirdAngle);
 
-
-        currAngle += normalizeAngle(deltaAngle);
-        lastAngles = orientation;
-        //telemetry.addData("RobotEncoded", orientation.firstAngle);
+//        currAngle += deltaAngle;
+        currAngle = orientation.firstAngle - startingAngle.firstAngle;
+//        lastAngles = orientation;
         return currAngle;
     }
 
-    public void turn(double degrees, double power) { //power is positive
-        resetAngle();
-
-        double error = degrees;
-
-        while(Math.abs(error) > 5) {
-            double motorPower = error < 0 ? -power : power;
-            turnR(motorPower);
-            error = degrees - getAngle();
-        }
-
-        stopBot();
-    }
 
     public void turnPID(double degrees) {
         resetAngle();
 
         double error = degrees;
 
-        while (Math.abs(error) > 5) {
+        while (Math.abs(error) > 3) {
             telemetry.addData("angle", this.getAngle());
             telemetry.addData("error", error);
 
@@ -97,7 +87,8 @@ public class Robot {
             telemetry.addData("power", motorPower);
 
             turnR(motorPower);
-            error = degrees - getAngle();
+            error = (degrees - getAngle() > 180) ? -360-degrees+getAngle()  : degrees - getAngle();
+//                    Math.atan2(Math.sin(getAngle()), Math.cos(getAngle()));
 
             telemetry.update();
         }
@@ -106,11 +97,11 @@ public class Robot {
     }
 
     public double normalizeAngle(double angle) {
-        if (angle > 180) {
-            angle -= 360;
-        } else if (angle <= -180) {
-            angle += 360;
-        }
+//        if (angle > 180) {
+//            angle -= 360;
+//        } else if (angle <= -180) {
+//            angle += 360;
+//        }
 
         return angle;
     }

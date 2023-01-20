@@ -7,63 +7,67 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class RedZoneBlueTerminal extends LinearOpMode {
     @Override
     public void runOpMode() {
-        //Robot robot = new Robot(hardwareMap);
+        //Robot robot = new Robot(hardwareMap, telemetry);
         RobotEncoded robotencoded = new RobotEncoded(hardwareMap);
 
         waitForStart();
         //if (isStopRequested()) return;
-        // turning distanceInches value: 20
-        //to the right too much
-        //right
+        // turning distanceInches value: 22
+       //right
         //since this is a blue terminal starting pos. will be at the left edge
 
         robotencoded.closeClaw();
 
-        robotencoded.forward(2,800);
+        robotencoded.forward(2,850);
 
-        robotencoded.strafeRight(5,800);
+        robotencoded.strafeRight(5,700);
 
-        robotencoded.forward(22,800);
+        robotencoded.forward(23,850);
 
-        robotencoded.strafeLeft(19,800);
+        robotencoded.strafeLeft(18,700);
 
-        robotencoded.forward(3,800);
+        robotencoded.forward(3,850);
 
-        robotencoded.setSlidePosition(800,Constants.MJ);
+        robotencoded.setSlidePosition(850,Constants.MJ);
 
-        robotencoded.forward(3,800);
+        robotencoded.forward(2,850);
         robotencoded.closeClaw();
-        sleep(1500); // wait until the arm stops shaking midair
+        sleep(1000); // wait until the arm stops shaking midair
 
         robotencoded.stopBot();
         robotencoded.openClaw();
         sleep(1000);
 
-        robotencoded.backward(5,800);
+        robotencoded.backward(5,850);
 
-        robotencoded.setSlidePosition(800,Constants.GJ);
+        robotencoded.setSlidePosition(850,Constants.GJ);
 
-        robotencoded.strafeRight(16,800);
+        robotencoded.strafeRight(16,700);
 
-        robotencoded.forward(24,800);
+        robotencoded.forward(25,850);
 
-        robotencoded.turnRight(22,800); //turn 90 degrees
+//        robot.turnPID(90);
+        robotencoded.turnRight(23,800); //turn 90 degrees
 
-        robotencoded.forward(22,800);
+        robotencoded.forward(18,850);
 
-        robotencoded.setSlidePosition(800,11.5);
+        robotencoded.setSlidePosition(850,6);
         sleep(1000);
 
+        robotencoded.forward(2,800);
+        robotencoded.openClaw();
+        sleep(1000);
         robotencoded.closeClaw();
         sleep(1000);
 
-        robotencoded.backward(6,800);
+        robotencoded.backward(12,850);
 
-        robotencoded.turnRight(22,800);
+//        robot.turnPID(90);
+        robotencoded.turnRight(23,800);
 
-        robotencoded.forward(2,800);
+        robotencoded.forward(2,850);
 
-        robotencoded.setSlidePosition(800,Constants.LJ);
+        robotencoded.setSlidePosition(850,Constants.LJ);
         robotencoded.closeClaw();
         sleep(1000);
 
@@ -71,26 +75,26 @@ public class RedZoneBlueTerminal extends LinearOpMode {
         robotencoded.stopBot();
         sleep(1000);
 
-        robotencoded.backward(12,800);
+        robotencoded.backward(12,850);
 
-        robotencoded.turnLeft(20,800);
+        robotencoded.turnLeft(20,850);
 
-        robotencoded.forward(8,800);
+        robotencoded.forward(8,850);
 
-        robotencoded.setSlidePosition(800,10.5);
+        robotencoded.setSlidePosition(850,8.5);
         robotencoded.closeClaw();
         sleep(1000);
 
         robotencoded.openClaw();
         sleep(1000);
 
-        robotencoded.backward(12,800);
+        robotencoded.backward(12,850);
 
-        robotencoded.turnLeft(22,800);
+        robotencoded.turnLeft(22,850);
 
-        robotencoded.forward(3,800);
+        robotencoded.forward(3,850);
 
-        robotencoded.setSlidePosition(800,Constants.LJ);
+        robotencoded.setSlidePosition(850,Constants.LJ);
         sleep(1000);
 
         robotencoded.openClaw();

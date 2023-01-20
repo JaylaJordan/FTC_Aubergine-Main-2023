@@ -325,7 +325,6 @@ public class RobotEncoded {
         if (distanceInches >= MAX_TICKS_LS || distanceInches < 0)
             return;
 
-
         linearSlide.setTargetPosition((int) (distanceInches * TICKS_PER_INCH_LS));
         linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         linearSlide.setVelocity(velocity);

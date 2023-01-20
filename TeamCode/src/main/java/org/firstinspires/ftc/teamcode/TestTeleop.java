@@ -61,12 +61,11 @@ public class TestTeleop extends OpMode {
 
         //claw servo
         if (gamepad2.right_bumper) { // open claw
-            claw.setPosition(0.85);
+            claw.setPosition(0.9);
         }
         else if (gamepad2.left_bumper) { // close claw
              claw.setPosition(0.2);
         }
-
 
         // linear slide motion
         if (gamepad2.a) {
@@ -88,7 +87,6 @@ public class TestTeleop extends OpMode {
             lsHeight += 0.0005;
         } else if (gamepad2.right_stick_y < -0.1) {
             lsHeight = linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS;
-            lsHeight -= 0.0005;
         }
 
         //move linear slide
