@@ -1,10 +1,18 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.drive;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class RobotEncoded {
 
@@ -12,8 +20,9 @@ public class RobotEncoded {
     DcMotorEx frontRight;
     DcMotorEx backLeft;
     DcMotorEx backRight;
-
     DcMotorEx linearSlide;
+    BNO055IMU imu;
+    Telemetry telemetry;
 
     Servo claw;
 
@@ -25,7 +34,7 @@ public class RobotEncoded {
     static final double LS_DIAMETER_INCHES = 1.404;
     static final double TICKS_PER_INCH_LS = (TICKS_PER_MOTOR_ROTATION * GEAR_REDUCTION) / (LS_DIAMETER_INCHES * Math.PI);
 
-    static final double MAX_TICKS_LS = 30;
+    static final double MAX_TICKS_LS = 34;
     static final double MIN_TICKS_LS = 10;
 
     //final double degreesPerInch = 360;
@@ -33,8 +42,12 @@ public class RobotEncoded {
 //    public Orientation lastAngles = new Orientation();
 //    public double currAngle = 0.0;
 
+    public double currAngle = 0.0;
+    public Orientation lastAngles;
+    private double TURN_P = 1.0/360; // tune this
 
-    public RobotEncoded(HardwareMap hardwareMap) {
+    public RobotEncoded(HardwareMap hardwareMap, Telemetry telemetry) {
+        this.telemetry = telemetry;
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
@@ -60,10 +73,21 @@ public class RobotEncoded {
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
 //        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // set default ticks back to 0
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        imu.initialize(parameters);
     }
 
     public void openClaw () {
-        claw.setPosition(0.9);
+        claw.setPosition(0.636);
     }
     public void closeClaw () {
         claw.setPosition(0.2);
@@ -74,15 +98,6 @@ public class RobotEncoded {
         frontLeft.setPower(-Power);
         backRight.setPower(Power);
         backLeft.setPower(-Power);
-    }
-
-    public double normalizeAngle(double angle) {
-        if (angle > 180) {
-            angle -= 180;
-        } else if (angle <= -180) {
-            angle += 180;
-        }
-        return angle;
     }
 
     public void forward(double distanceInches, double velocity) {
@@ -135,7 +150,7 @@ public class RobotEncoded {
         backRight.setVelocity(0);
     }
 
-    public void strafeRight(int distanceInches, double velocity) {
+    public void strafeRight(double distanceInches, double velocity) {
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         backRight.setTargetPosition(backRight.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
@@ -160,7 +175,7 @@ public class RobotEncoded {
         backRight.setVelocity(0);
     }
 
-    public void strafeLeft(int distanceInches, double velocity) {
+    public void strafeLeft(double distanceInches, double velocity) {
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
         backRight.setTargetPosition(backRight.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
@@ -186,7 +201,6 @@ public class RobotEncoded {
     }
 
     public void turnLeft(int distanceInches, double velocity) {
-
         //int distanceInches = (int) (degrees / degreesPerInch);
         frontLeft.setTargetPosition(frontLeft.getCurrentPosition() + (int) (-distanceInches * TICKS_PER_INCH));
         frontRight.setTargetPosition(frontRight.getCurrentPosition() + (int) (distanceInches * TICKS_PER_INCH));
@@ -322,7 +336,10 @@ public class RobotEncoded {
 
     public void setSlidePosition(double velocity, double distanceInches) {
 
-        if (distanceInches >= MAX_TICKS_LS || distanceInches < 0)
+//        telemetry.addData("Slide distance", distanceInches);
+//        telemetry.update();
+
+        if (distanceInches > MAX_TICKS_LS || distanceInches < 0)
             return;
 
         linearSlide.setTargetPosition((int) (distanceInches * TICKS_PER_INCH_LS));
@@ -331,7 +348,67 @@ public class RobotEncoded {
 
         while(linearSlide.isBusy()) { }
     }
+
+    public void resetAngle() {
+        lastAngles = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES);
+        currAngle = 0;
+    }
+
+    public double getAngle() {
+
+        Orientation orientation = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES);
+
+        double deltaAngle = orientation.firstAngle - lastAngles.firstAngle;
+//        telemetry.addData("raw",orientation.firstAngle);
+//        telemetry.addData("x", orientation.secondAngle);
+//        telemetry.addData("y", orientation.thirdAngle);
+
+        currAngle += deltaAngle;
+//        currAngle = orientation.firstAngle - startingAngle.firstAngle;
+        lastAngles = orientation;
+        return currAngle;
+    }
+
+
+    public void turnPID(double degrees) {
+        resetAngle();
+
+        double error = degrees;
+
+        while (Math.abs(error) > 3) {
+            telemetry.addData("angle", this.getAngle());
+            telemetry.addData("error", error);
+
+            double motorPower = error * TURN_P * Math.signum(error);
+            telemetry.addData("power", motorPower);
+
+            turnR(motorPower);
+//            error = (degrees - getAngle() > 180) ? -360-degrees+getAngle()  : degrees - getAngle();
+//                    Math.atan2(Math.sin(getAngle()), Math.cos(getAngle()));
+            double angle = getAngle();
+            error = Utils.unsignedMin(Utils.unsignedMin(degrees - angle, degrees - (angle + 360)), degrees - (angle - 360));
+
+            telemetry.update();
+        }
+
+        stopBot();
+    }
+
+    public double normalizeAngle(double angle) {
+        if (angle > 180) {
+            angle -= 360;
+        } else if (angle <= -180) {
+            angle += 360;
+        }
+
+        return angle;
+    }
+
+    public void setTelemetry(Telemetry telemetry) {
+        this.telemetry = telemetry;
+    }
 }
+
 
      /*
     public void resetAngle() {

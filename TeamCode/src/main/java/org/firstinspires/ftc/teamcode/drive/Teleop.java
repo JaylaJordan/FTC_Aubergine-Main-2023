@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.drive;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,9 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.drive.Constants;
+
 
 @TeleOp (name="main")
-public class TestTeleop extends OpMode {
+public class Teleop extends OpMode {
 
     double lsHeight = 0;
 
@@ -35,6 +37,7 @@ public class TestTeleop extends OpMode {
 
         linearSlide.setDirection(DcMotorSimple.Direction.REVERSE);
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linearSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         claw = hardwareMap.get(Servo.class, "claw");
         claw.scaleRange(0, 1);
@@ -58,13 +61,12 @@ public class TestTeleop extends OpMode {
             backRight.setPower((y + x - r) * Constants.defaultVal);
         }
 
-
         //claw servo
         if (gamepad2.right_bumper) { // open claw
-            claw.setPosition(0.9);
+            claw.setPosition(Constants.openVal);
         }
         else if (gamepad2.left_bumper) { // close claw
-             claw.setPosition(0.2);
+             claw.setPosition(Constants.closeVal);
         }
 
         // linear slide motion
@@ -82,28 +84,30 @@ public class TestTeleop extends OpMode {
         }
 
         //manual control
-        if (gamepad2.right_stick_y > 0.1) {
+        if (gamepad2.right_stick_y > 0.1 && lsHeight >= 0) {
             lsHeight = linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS;
-            lsHeight += 0.0005;
+            lsHeight -= 0.9;
         } else if (gamepad2.right_stick_y < -0.1) {
             lsHeight = linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS;
+            lsHeight += 0.9;
         }
 
         //move linear slide
-        //Math.abs(linearSlide.getCurrentPosition() - (int) (lsHeight * Constants.TICKS_PER_INCH_LS)) >= 0.03
-        if (linearSlide.getCurrentPosition() != (int) (lsHeight * Constants.TICKS_PER_INCH_LS)) {
+        double rawDifference = linearSlide.getCurrentPosition() - lsHeight * Constants.TICKS_PER_INCH_LS;
+        double difference = Math.abs(rawDifference);
+
+        if (difference >= 30) {
             linearSlide.setTargetPosition((int)(lsHeight * Constants.TICKS_PER_INCH_LS));
             linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlide.setVelocity(1400);
-        } else linearSlide.setVelocity(0);
+            linearSlide.setPower(0.6);
+        }
+        else linearSlide.setPower(0);
 
-        telemetry.addData("y:", y);
-        telemetry.addData("x: ", x);
-        telemetry.addData("r", r);
+        telemetry.addData("difference", difference);
+        telemetry.addData("raw difference", rawDifference);
         telemetry.addData("linear slide velocity", linearSlide.getVelocity());
-        telemetry.addData("target pos", lsHeight);
-        telemetry.addData("cur pos", linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS);
+        telemetry.addData("target pos", linearSlide.getTargetPosition());
+        telemetry.addData("cur pos", linearSlide.getCurrentPosition());
         telemetry.update();
-//    }
     }
 }
