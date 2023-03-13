@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.Constants;
 
-
 @TeleOp (name="main")
 public class Teleop extends OpMode {
 
@@ -99,9 +98,9 @@ public class Teleop extends OpMode {
         if (difference >= 30) {
             linearSlide.setTargetPosition((int)(lsHeight * Constants.TICKS_PER_INCH_LS));
             linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlide.setPower(0.6);
+            linearSlide.setVelocity(1000);
         }
-        else linearSlide.setPower(0);
+        //else linearSlide.setVelocity(0);
 
         telemetry.addData("difference", difference);
         telemetry.addData("raw difference", rawDifference);

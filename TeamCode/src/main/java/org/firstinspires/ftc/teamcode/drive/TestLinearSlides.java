@@ -45,6 +45,12 @@ public class TestLinearSlides extends OpMode {
 
     @Override
     public void loop() {   // runs on multiple times
+
+        linearSlide.setTargetPosition(1000);
+        linearSlide.setVelocity(800);
+        linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
         double x = -gamepad1.left_stick_x; // stores data in gp
         double y = gamepad1.left_stick_y;
         double r = -gamepad1.right_stick_x;
@@ -69,7 +75,6 @@ public class TestLinearSlides extends OpMode {
             claw.setPosition(Constants.closeVal);
         }
 
-
         // linear slide motion
         if (gamepad2.a) {
             linearSlide.setTargetPosition(Constants.ticksGJ);
@@ -83,14 +88,22 @@ public class TestLinearSlides extends OpMode {
         else if (gamepad2.y) {
             linearSlide.setTargetPosition(Constants.ticksHJ);
         }
+        if (gamepad2.right_stick_y > 0.1 && lsHeight >= 0) {
+            lsHeight = linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS;
+            lsHeight -= 0.9;
+
+        } else if (gamepad2.right_stick_y < -0.1) {
+            lsHeight = linearSlide.getCurrentPosition() / Constants.TICKS_PER_INCH_LS;
+            lsHeight += 0.9;
+        }
 
         int rawDifference = linearSlide.getCurrentPosition() - linearSlide.getTargetPosition();
 
-        if (Math.abs(rawDifference) >= 10) {
-            linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            linearSlide.setPower(0.6);
-        }
-        else linearSlide.setPower(0);
+//        if (Math.abs(rawDifference) >= 10) {
+//            linearSlide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            linearSlide.setVelocity(800);
+//        }
+//        else linearSlide.setVelocity(0);
 
         telemetry.addData("linear slide velocity", linearSlide.getVelocity());
         telemetry.addData("target pos", linearSlide.getTargetPosition());
