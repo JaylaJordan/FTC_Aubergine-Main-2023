@@ -30,8 +30,8 @@ public class Constants {
     static final double defaultVal = 0.9;
 
     //in range from 0 to 1
-    static final double closeVal = 0.1;
-    static final double openVal = 0.887;
+    static final double closeVal = 0.9;
+    static final double openVal = 0.1;
 
     /* camera config */
 

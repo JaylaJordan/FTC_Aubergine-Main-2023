@@ -31,4 +31,3 @@ import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
                     .start();
         }
     }
-}
