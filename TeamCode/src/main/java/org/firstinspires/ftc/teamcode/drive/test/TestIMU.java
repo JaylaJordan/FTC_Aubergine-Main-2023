@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive;
+package org.firstinspires.ftc.teamcode.drive.test;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -18,7 +18,7 @@ public class TestIMU extends LinearOpMode {
         RobotEncoded robotencoded = new RobotEncoded(hardwareMap, telemetry);
 
         waitForStart();
-        robotencoded.turnPID(90);
+//        robotencoded.turnPID(90);
         BNO055IMU imu = hardwareMap.get(BNO055IMU.class, "imu");
 
         while (opModeIsActive()) {

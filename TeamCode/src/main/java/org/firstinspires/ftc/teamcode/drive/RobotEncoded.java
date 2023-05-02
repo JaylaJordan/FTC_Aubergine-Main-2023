@@ -87,10 +87,10 @@ public class RobotEncoded {
     }
 
     public void openClaw () {
-        claw.setPosition(0.636);
+        claw.setPosition(0.75);
     }
     public void closeClaw () {
-        claw.setPosition(0.2);
+        claw.setPosition(0.1);
     }
 
     public void turnR(double Power) {
