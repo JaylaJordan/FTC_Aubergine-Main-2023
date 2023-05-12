@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.drive.RobotEncoded;
 
-@Disabled
+
 @Autonomous(group = "test")
 public class Trajectory_Camera_Blue extends LinearOpMode {
     @Override
@@ -33,9 +33,9 @@ public class Trajectory_Camera_Blue extends LinearOpMode {
         robotencoded.setSlidePosition(1500,Constants.MJ);
         sleep(100);
         robotencoded.forward(8,1100);
-        sleep(800);
+        sleep(700);
         robotencoded.openClaw();
-        sleep(800);
+        sleep(700);
         robotencoded.backward(8,1100);
         sleep(100);
         robotencoded.strafeLeft(12,1000);
@@ -48,7 +48,7 @@ public class Trajectory_Camera_Blue extends LinearOpMode {
         sleep(100);
         robotencoded.setSlidePosition(1500,5.5);
         sleep(100);
-        robotencoded.forward(45,1100);
+        robotencoded.forward(45.5,1100);
         sleep(300);
         robotencoded.closeClaw();
         sleep(500);
@@ -59,14 +59,13 @@ public class Trajectory_Camera_Blue extends LinearOpMode {
         robotencoded.turnRight(19,900);
         sleep(100);
         robotencoded.forward(4.5,1100);
-        sleep(800);
+        sleep(700);
         robotencoded.openClaw();
-        sleep(800);
+        sleep(700);
         robotencoded.backward(6,1100);
         sleep(100);
         robotencoded.strafeRight(12,1100);
         sleep(100);
-        robotencoded.forward(18,1400);
 
 //        robotencoded.setSlidePosition(1400,7.5);
 //        sleep(100);

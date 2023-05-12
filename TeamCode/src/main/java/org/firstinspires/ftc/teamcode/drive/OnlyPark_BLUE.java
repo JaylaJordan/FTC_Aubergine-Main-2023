@@ -118,17 +118,20 @@ public class OnlyPark_BLUE extends LinearOpMode
         if (tagOfInterest == null || tagOfInterest.id == Left) {
             robotencoded.strafeRight(6,900);
             robotencoded.forward(24,900);
-            robotencoded.strafeLeft (28,900);
+            robotencoded.strafeLeft (30,900);
+            robotencoded.setSlidePosition(1000,Constants.GJ);
         }
         else if(tagOfInterest.id == Middle) {
             robotencoded.strafeRight(6,900);
             robotencoded.forward (24,900);
+            robotencoded.setSlidePosition(1000,Constants.GJ);
 
         }
         else if(tagOfInterest.id == Right) {
             robotencoded.strafeRight(6,900);
             robotencoded.forward(24,900);
             robotencoded.strafeRight (28,900);
+            robotencoded.setSlidePosition(1000,Constants.GJ);
         }
         while (opModeIsActive()) {sleep(20);}
     }

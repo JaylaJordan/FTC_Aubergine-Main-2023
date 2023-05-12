@@ -130,10 +130,10 @@ public class Red_RED extends LinearOpMode
             sleep(100);
             robotencoded.setSlidePosition(1500,Constants.MJ);
             sleep(100);
-            robotencoded.forward(6,1100);
-            sleep(800);
+            robotencoded.forward(7,1100);
+            sleep(700);
             robotencoded.openClaw();
-            sleep(800);
+            sleep(700);
             robotencoded.backward(8,1100);
             sleep(100);
             robotencoded.strafeRight(12,1000);
@@ -146,7 +146,7 @@ public class Red_RED extends LinearOpMode
             sleep(100);
             robotencoded.setSlidePosition(1500,5.5);
             sleep(100);
-            robotencoded.forward(45,1100);
+            robotencoded.forward(46,1100);
             sleep(300);
             robotencoded.closeClaw();
             sleep(500);
@@ -162,9 +162,9 @@ public class Red_RED extends LinearOpMode
             sleep(800);
             robotencoded.backward(6,1100);
             sleep(100);
-            robotencoded.strafeRight(30,1100);
-            sleep(100);
             robotencoded.setSlidePosition(1400,Constants.GJ);
+            sleep(100);
+            robotencoded.strafeRight(34,1400);
 
         }
         else if(tagOfInterest.id == Middle) {
@@ -212,9 +212,10 @@ public class Red_RED extends LinearOpMode
             sleep(600);
             robotencoded.backward(6,1100);
             sleep(100);
-            robotencoded.strafeRight(12,1100);
-            sleep(100);
             robotencoded.setSlidePosition(1400,Constants.GJ);
+            sleep(100);
+            robotencoded.strafeRight(11,1400);
+            sleep(100);
 
 
         }
@@ -228,11 +229,11 @@ public class Red_RED extends LinearOpMode
             sleep(100);
             robotencoded.forward(21,1100);
             sleep(100);
-            robotencoded.strafeLeft(12.5,1000);
+            robotencoded.strafeLeft(12,1000);
             sleep(100);
             robotencoded.setSlidePosition(1500,Constants.MJ);
             sleep(100);
-            robotencoded.forward(6,1100);
+            robotencoded.forward(7,1100);
             sleep(600);
             robotencoded.openClaw();
             sleep(600);
@@ -240,7 +241,7 @@ public class Red_RED extends LinearOpMode
             sleep(100);
             robotencoded.strafeRight(12,1000);
             sleep(100);
-            robotencoded.forward(26,1000);
+            robotencoded.forward(25,1000);
             sleep(100);
             robotencoded.turnLeft(19,900);
             sleep(100);
