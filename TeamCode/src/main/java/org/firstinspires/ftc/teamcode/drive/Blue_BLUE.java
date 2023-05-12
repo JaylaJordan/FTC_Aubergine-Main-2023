@@ -218,7 +218,7 @@ public class Blue_BLUE extends LinearOpMode
 
             robotencoded.closeClaw();
             robotencoded.forward(2,1100);
-            sleep(100);
+            sleep(90);
             robotencoded.strafeLeft(21,1000);
             sleep(100);
             robotencoded.forward(22,1100);
